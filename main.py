@@ -222,7 +222,7 @@ def label_text(ip: str):
         "Hate-speech-CNERG/indic-abusive-allInOne-MuRIL")
     # model.to_bettertransformer()
     pipe = pipeline("text-classification", model=model, tokenizer=tokenizer)
-    print(pipe(ip))
+    return pipe(ip)
 
 
 start_time = time.time()
