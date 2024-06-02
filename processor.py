@@ -226,24 +226,28 @@ class Processor:
         return " ".join(translated_text)
 
     def process_input(self, input_text):
-        logger.debug(
-            "Processing input text for Hinglish classification and translation")
+        logger.debug("Processing input text for Hinglish classification and translation")
         hinglish_classification = self.model_1_pipeline(input_text)
+        logger.debug(f"Hinglish classification result: {hinglish_classification}")
+        
         if hinglish_classification[0]['label'] in ['LABEL_1', 'LABEL_0']:
             lang = self.lang_classifier.classify(input_text)
+            logger.debug(f"Language classification result: {lang}")
+            
             if lang[0] in ['as', 'hi', 'bn', 'kK', 'gu', 'kn', 'ur', 'ml', 'mr', 'ne', 'or', 'pa', 'ta', 'te']:
                 return input_text
 
             src_lang, tgt_lang = "eng_Latn", "hin_Deva"
-            hi_translations = self.translate_paragraph(
-                input_text, src_lang, tgt_lang)
+            hi_translations = self.translate_paragraph(input_text, src_lang, tgt_lang)
             logger.debug(f"Translated text to Hindi: {hi_translations}")
             return hi_translations
         else:
             return input_text
 
-    def process_text(self, input_text):
+    def is_hate_speech(self, input_text):
         logger.debug("Processing text for hate speech classification")
         input_processed = self.process_input(input_text)
+        logger.debug(f"Processed input text: {input_processed}")
         output = self.model_2_pipeline(input_processed)
-        return output[0]['label'] == 'LABEL_1'
+        logger.debug(f"Hate speech classification result: {output}")
+        return output[0]['label'] == 'LABEL_1', output[0]
