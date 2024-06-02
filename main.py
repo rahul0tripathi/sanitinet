@@ -2,7 +2,6 @@ from processor import Processor
 import json
 
 from fastapi import FastAPI, HTTPException
-from typing import List
 import logging
 import models
 

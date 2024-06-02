@@ -16,6 +16,7 @@ from indicnlp.tokenize.sentence_tokenize import sentence_split, DELIM_PAT_NO_DAN
 from IndicTransTokenizer import IndicProcessor
 from langid.langid import LanguageIdentifier, model as langmodel
 from load_models import get_hf_model, MODEL_INIDIC_TRANS, MODEL_HINGLISH_CLASSIFIER, MODEL_HATE_SPEECH_CLASSIFIER
+from sacremoses import MosesTokenizer
 
 # Mapping of language codes
 flores_codes = {
@@ -154,13 +155,13 @@ class Processor:
 
     def initialize_moses_splitter_en(self):
         logger.debug("Initializing Moses sentence splitter for English")
-        self.moses_splitter_en = MosesSentenceSplitter(
+        self.moses_splitter_en = MosesTokenizer(
             flores_codes["eng_Latn"])
 
     def split_sentences(self, input_text, lang):
         logger.debug(f"Splitting sentences for language: {lang}")
         if lang == "eng_Latn":
-            sents_moses = self.moses_splitter_en([input_text])
+            sents_moses = self.moses_splitter_en.tokenize([input_text])
             sents_nltk = sent_tokenize(input_text)
             input_sentences = sents_nltk if len(
                 sents_nltk) < len(sents_moses) else sents_moses
@@ -226,19 +227,22 @@ class Processor:
         return " ".join(translated_text)
 
     def process_input(self, input_text):
-        logger.debug("Processing input text for Hinglish classification and translation")
+        logger.debug(
+            "Processing input text for Hinglish classification and translation")
         hinglish_classification = self.model_1_pipeline(input_text)
-        logger.debug(f"Hinglish classification result: {hinglish_classification}")
-        
+        logger.debug(
+            f"Hinglish classification result: {hinglish_classification}")
+
         if hinglish_classification[0]['label'] in ['LABEL_1', 'LABEL_0']:
             lang = self.lang_classifier.classify(input_text)
             logger.debug(f"Language classification result: {lang}")
-            
+
             if lang[0] in ['as', 'hi', 'bn', 'kK', 'gu', 'kn', 'ur', 'ml', 'mr', 'ne', 'or', 'pa', 'ta', 'te']:
                 return input_text
 
             src_lang, tgt_lang = "eng_Latn", "hin_Deva"
-            hi_translations = self.translate_paragraph(input_text, src_lang, tgt_lang)
+            hi_translations = self.translate_paragraph(
+                input_text, src_lang, tgt_lang)
             logger.debug(f"Translated text to Hindi: {hi_translations}")
             return hi_translations
         else:
