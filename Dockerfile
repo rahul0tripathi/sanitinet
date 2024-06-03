@@ -21,6 +21,7 @@ WORKDIR /app/
 COPY --from=compiler /opt/venv /opt/venv
 COPY --from=compiler /app/IndicTransTokenizer/IndicTransTokenizer /app/IndicTransTokenizer
 ENV PATH="/opt/venv/bin:$PATH"
+RUN python3 -c "import nltk ; nltk.download('punkt')"
 COPY ./snapshot /app/snapshot
 COPY ./*.py /app/
 CMD ["python3", "main.py"]
