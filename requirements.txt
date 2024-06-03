@@ -22,3 +22,4 @@ uvicorn
 attrs
 cattrs
 sacremoses
+optimum
