@@ -8,11 +8,16 @@ class RawResult(BaseModel):
     score: float
 
 
-class ClassificationResult(BaseModel):
+class TextClassificationResult(BaseModel):
     is_hate_speech: bool
     input: str
     raw: RawResult
 
 
-class ClassificationRequest(BaseModel):
+class TextClassificationRequest(BaseModel):
     input_text: str
+
+
+class ImageClassificationResult(BaseModel):
+    nsfw: bool
+    raw: List[RawResult]
