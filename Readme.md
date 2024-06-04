@@ -92,3 +92,16 @@ curl --request POST \
   }
 }
 ```
+
+## Credits
+
+This project utilizes the following models from Hugging Face:
+
+- **Hinglish Classifier:** [Narasimha/hinglish-distilbert](https://huggingface.co/Narasimha/hinglish-distilbert)
+- **Indic Translation:** [ai4bharat/indictrans2-en-indic-dist-200M](https://huggingface.co/ai4bharat/indictrans2-en-indic-dist-200M)
+- **Hate Speech Classifier:** [Hate-speech-CNERG/indic-abusive-allInOne-MuRIL](https://huggingface.co/Hate-speech-CNERG/indic-abusive-allInOne-MuRIL)
+- **NSFW Image Classifier:** [LukeJacob2023/nsfw-image-detector](https://huggingface.co/LukeJacob2023/nsfw-image-detector)
+
+## License
+
+This project is licensed under the MIT License.
