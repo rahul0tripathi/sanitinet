@@ -1,9 +1,7 @@
 import logging
 import time
 import torch
-import torch.nn as nn
 
-from mosestokenizer import MosesSentenceSplitter
 from transformers import (
     AutoModelForSeq2SeqLM,
     AutoModelForSequenceClassification,
@@ -57,7 +55,7 @@ flores_codes = {
 logger = logging.getLogger(__name__)
 
 
-class Processor:
+class TextProcessor:
     model_0_tokenizer = None
     model_0 = None
     model_1_tokenizer = None
