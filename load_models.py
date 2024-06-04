@@ -20,5 +20,5 @@ def get_hf_model(repo_name):
     return snapshot_download(repo_name, cache_dir=cache_dir)
 
 
-def preload():
+if __name__ == "__main__":
     [get_hf_model(repo_name) for repo_name in models]
