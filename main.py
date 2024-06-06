@@ -12,6 +12,7 @@ app = FastAPI()
 text_processor = TextProcessor()
 image_processor = ImageProcessor()
 
+
 @app.post("/v1/chat/classify", response_model=models.TextClassificationResult)
 async def classify_text(input: models.TextClassificationRequest):
     try:
@@ -25,6 +26,7 @@ async def classify_text(input: models.TextClassificationRequest):
         logger.error(f"Error classifying text: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+
 @app.post("/v1/image/classify")
 async def classify_image(input: UploadFile):
     try:
@@ -37,4 +39,8 @@ async def classify_image(input: UploadFile):
 
 if __name__ == "__main__":
     import uvicorn
+    import torch
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    logger.info("DEVICE")
+    logger.info(DEVICE)
     uvicorn.run(app, host="0.0.0.0", port=8000)

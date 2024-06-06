@@ -132,19 +132,19 @@ class TextProcessor:
         self.model_1_tokenizer = AutoTokenizer.from_pretrained(
             get_hf_model(MODEL_HINGLISH_CLASSIFIER))
         self.model_1 = AutoModelForSequenceClassification.from_pretrained(
-            get_hf_model(MODEL_HINGLISH_CLASSIFIER))
+            get_hf_model(MODEL_HINGLISH_CLASSIFIER)).to(self.DEVICE)
         self.model_1_pipeline = pipeline(
-            "text-classification", model=self.model_1, tokenizer=self.model_1_tokenizer)
+            "text-classification", model=self.model_1, tokenizer=self.model_1_tokenizer, device=0 if self.DEVICE == "cuda" else -1)
 
     def initialize_hate_speech_model_and_tokenizer(self):
         logger.debug("Initializing hate speech model and tokenizer")
         self.model_2_tokenizer = AutoTokenizer.from_pretrained(
             get_hf_model(MODEL_HATE_SPEECH_CLASSIFIER))
         self.model_2 = AutoModelForSequenceClassification.from_pretrained(
-            get_hf_model(MODEL_HATE_SPEECH_CLASSIFIER))
-        self.model_2.to_bettertransformer()
+            get_hf_model(MODEL_HATE_SPEECH_CLASSIFIER)).to(self.DEVICE)
+        self.model_2 = self.model_2.to_bettertransformer()
         self.model_2_pipeline = pipeline(
-            "text-classification", model=self.model_2, tokenizer=self.model_2_tokenizer)
+            "text-classification", model=self.model_2, tokenizer=self.model_2_tokenizer, device=0 if self.DEVICE == "cuda" else -1)
 
     def initialize_lang_classifier(self):
         logger.debug("Initializing language classifier")
