@@ -20,7 +20,6 @@ class ImageProcessor:
             model_name)
         self.model = AutoModelForImageClassification.from_pretrained(
             model_name).to(DEVICE)
-        self.mode = torch.compile(self.model)
         self.pipeline = pipeline(
             "image-classification", model=self.model, image_processor=self.image_processor, device=0 if DEVICE == "cuda" else -1
         )
