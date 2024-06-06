@@ -252,4 +252,4 @@ class TextProcessor:
         logger.debug(f"Processed input text: {input_processed}")
         output = self.model_2_pipeline(input_processed)
         logger.debug(f"Hate speech classification result: {output}")
-        return output[0]['label'] == 'LABEL_1', output[0]
+        return output[0]['label'] == 'LABEL_1' and output[0]['score'] > 0.7, output[0]
